@@ -36,8 +36,11 @@ using ConstAig = std::shared_ptr<const aiger>;
 inline Aig make_aig() { return {aiger_init(), &aiger_reset}; }
 
 // Return non-zero on success on success
-Aig aiger_checked_read(const std::string& file);
-bool aiger_checked_write(Aig aig, const std::string& file);
+Aig checked_read(const std::string& file);
+bool checked_write(Aig aig, const std::string& file);
+
+bool is_combinational(const ConstAig& aig);
+bool has_properties(const ConstAig& aig);
 
 enum class SymbType : uint8_t { Input, Latch, Output, Bad, Constraint, Justice, Fairness };
 

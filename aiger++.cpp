@@ -10,7 +10,7 @@
 
 namespace Aiger {
 
-Aig aiger_checked_read(const std::string& file) {
+Aig checked_read(const std::string& file) {
 	auto aig = make_aig();
 
 	if (const auto aig_err = aiger_open_and_read_from_file(aig.get(), file.c_str())) {
@@ -28,7 +28,7 @@ Aig aiger_checked_read(const std::string& file) {
 	return aig;
 }
 
-bool aiger_checked_write(Aig aig, const std::string& file) {
+bool checked_write(Aig aig, const std::string& file) {
 	if (const auto aig_err = aiger_check(aig.get())) {
 		fmt::println(stderr, R"(ERROR: aiger is invalid (before writing to "{}"):)", file);
 		fmt::println(stderr, "{}", aig_err);
@@ -41,6 +41,13 @@ bool aiger_checked_write(Aig aig, const std::string& file) {
 	}
 
 	return true;
+}
+
+bool is_combinational(const ConstAig& aig) { return aig->latches == 0; }
+
+bool has_properties(const ConstAig& aig) {
+	return (aig->num_bad > 0) || (aig->num_constraints > 0) || (aig->num_justice > 0) ||
+	       (aig->num_fairness > 0);
 }
 
 Aig rename(
