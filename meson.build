@@ -18,7 +18,7 @@ install_headers('aiger++.hpp', 'aiger.h')
 # It gets installed just as aiger.so... This means you can treat it just as
 # regular aiger too. The distinction is that the c++ stuff is built in and a
 # dependency on fmt
-libaiger = shared_library(
+libaiger = library(
 	'aiger',
 	'aiger.c',
 	'aiger++.cpp',
