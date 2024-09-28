@@ -13,7 +13,8 @@ namespace Aiger {
 Aig checked_read(const std::string& file) {
 	auto aig = make_aig();
 
-	if (const auto aig_err = aiger_open_and_read_from_file(aig.get(), file.c_str())) {
+	if (const auto aig_err = file == "-" ? aiger_read_from_file(aig.get(), stdin)
+	                                     : aiger_open_and_read_from_file(aig.get(), file.c_str())) {
 		fmt::println(stderr, R"(ERROR: error reading aiger file "{}":)", file);
 		fmt::println(stderr, "{}", aig_err);
 		return nullptr;
@@ -35,7 +36,8 @@ bool checked_write(Aig aig, const std::string& file) {
 		return false;
 	}
 
-	if (!aiger_open_and_write_to_file(aig.get(), file.c_str())) {
+	if (!(file == "-" ? aiger_write_to_file(aig.get(), aiger_ascii_mode, stdout)
+	                  : aiger_open_and_write_to_file(aig.get(), file.c_str()))) {
 		fmt::println(stderr, R"(ERROR: error writing aiger file "{}")", file);
 		return false;
 	}
