@@ -209,6 +209,11 @@ Aig strash(ConstAig unoptimised) {
 			nodes_to_visit.pop();
 
 			const auto lit = map(latch->lit);
+
+			// If we have already added the latch for this variable keep going
+			if (aiger_lit2var(lit) <= aig->maxvar && aiger_is_latch(aig.get(), lit))
+				continue;
+
 			aiger_add_latch(aig.get(), lit, map(latch->next), latch->name);
 
 			const auto reset = aiger_is_constant(latch->reset) ? latch->reset : lit;
