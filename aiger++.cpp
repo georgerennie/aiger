@@ -17,13 +17,13 @@ Aig checked_read(const std::string& file) {
 	                                     : aiger_open_and_read_from_file(aig.get(), file.c_str())) {
 		fmt::println(stderr, R"(ERROR: error reading aiger file "{}":)", file);
 		fmt::println(stderr, "{}", aig_err);
-		return nullptr;
+		return make_aig_ptr(nullptr);
 	}
 
 	if (const auto aig_err = aiger_check(aig.get())) {
 		fmt::println(stderr, R"(ERROR: aiger file "{}" is invalid:)", file);
 		fmt::println(stderr, "{}", aig_err);
-		return nullptr;
+		return make_aig_ptr(nullptr);
 	}
 
 	return aig;
@@ -45,15 +45,15 @@ bool checked_write(Aig aig, const std::string& file) {
 	return true;
 }
 
-bool is_combinational(const ConstAig& aig) { return aig->latches == 0; }
+bool is_combinational(const Aig& aig) { return aig->latches == 0; }
 
-bool has_properties(const ConstAig& aig) {
+bool has_properties(const Aig& aig) {
 	return (aig->num_bad > 0) || (aig->num_constraints > 0) || (aig->num_justice > 0) ||
 	       (aig->num_fairness > 0);
 }
 
 Aig rename(
-    ConstAig aig,
+    const Aig& aig,
     std::function<std::optional<std::string>(const aiger_symbol& symb, const SymbType type)> func
 ) {
 	auto renamed = make_aig();
@@ -93,7 +93,7 @@ Aig rename(
 	return renamed;
 }
 
-Aig strash(ConstAig unoptimised) {
+Aig strash(const Aig& unoptimised) {
 	auto aig = make_aig();
 
 	// A map from variables in the unoptimised AIG to literals in the optimised
