@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: 2024 George Rennie
 
+#include "aigerpp.hpp"
 #include <fmt/core.h>
 #include <algorithm>
 #include <cassert>
 #include <stack>
 #include <vector>
-#include "aigerpp.hpp"
 
 namespace Aiger {
 
