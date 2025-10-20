@@ -32,20 +32,20 @@ static_assert(std::numeric_limits<Lit>::digits >= 32);
 
 // Helper for managing aiger with RAII
 using Aig = std::unique_ptr<aiger, decltype(&aiger_reset)>;
-inline Aig make_aig() { return {aiger_init(), &aiger_reset}; }
-inline Aig make_aig_ptr(aiger* aig) { return {aig, &aiger_reset}; }
+[[nodiscard]] inline Aig make_aig() { return {aiger_init(), &aiger_reset}; }
+[[nodiscard]] inline Aig make_aig_ptr(aiger* aig) { return {aig, &aiger_reset}; }
 
 // Return non-zero on success on success
-Aig checked_read(const std::string& file);
-bool checked_write(const Aig& aig, const std::string& file);
+[[nodiscard]] Aig checked_read(const std::string& file);
+[[nodiscard]] bool checked_write(const Aig& aig, const std::string& file);
 
-bool is_combinational(const Aig& aig);
-bool has_properties(const Aig& aig);
+[[nodiscard]] bool is_combinational(const Aig& aig);
+[[nodiscard]] bool has_properties(const Aig& aig);
 
 enum class SymbType : uint8_t { Input, Latch, Output, Bad, Constraint, Justice, Fairness };
 
 // Copy an aig, renaming all symbols using the renaming function func
-Aig rename(
+[[nodiscard]] Aig rename(
     const Aig& aig,
     std::function<std::optional<std::string>(const aiger_symbol& symb, const SymbType type)> func
 );
@@ -55,18 +55,18 @@ Aig rename(
 // information this keeps invariant is the set of inputs/outputs/bad/constraints
 // and the names on latches that remain. latches/ands can be removed and their
 // literals changed
-Aig strash(const Aig& unoptimised);
+[[nodiscard]] Aig strash(const Aig& unoptimised);
 
 // clang-format off
-inline std::span<aiger_symbol> inputs(const Aig& aig)      { return {aig->inputs,      aig->num_inputs}; }
-inline std::span<aiger_symbol> latches(const Aig& aig)     { return {aig->latches,     aig->num_latches}; }
-inline std::span<aiger_symbol> outputs(const Aig& aig)     { return {aig->outputs,     aig->num_outputs}; }
-inline std::span<aiger_symbol> bads(const Aig& aig)        { return {aig->bad,         aig->num_bad}; }
-inline std::span<aiger_symbol> constraints(const Aig& aig) { return {aig->constraints, aig->num_constraints}; }
-inline std::span<aiger_symbol> justices(const Aig& aig)    { return {aig->justice,     aig->num_justice}; }
-inline std::span<aiger_symbol> fairnesses(const Aig& aig)  { return {aig->fairness,    aig->num_fairness}; }
-inline std::span<aiger_and>    gates(const Aig& aig)       { return {aig->ands,        aig->num_ands}; }
-inline std::span<Lit> justice_lits(const aiger_symbol& justice) { return {justice.lits, justice.size}; }
+[[nodiscard]] inline std::span<aiger_symbol> inputs(const Aig& aig)      { return {aig->inputs,      aig->num_inputs}; }
+[[nodiscard]] inline std::span<aiger_symbol> latches(const Aig& aig)     { return {aig->latches,     aig->num_latches}; }
+[[nodiscard]] inline std::span<aiger_symbol> outputs(const Aig& aig)     { return {aig->outputs,     aig->num_outputs}; }
+[[nodiscard]] inline std::span<aiger_symbol> bads(const Aig& aig)        { return {aig->bad,         aig->num_bad}; }
+[[nodiscard]] inline std::span<aiger_symbol> constraints(const Aig& aig) { return {aig->constraints, aig->num_constraints}; }
+[[nodiscard]] inline std::span<aiger_symbol> justices(const Aig& aig)    { return {aig->justice,     aig->num_justice}; }
+[[nodiscard]] inline std::span<aiger_symbol> fairnesses(const Aig& aig)  { return {aig->fairness,    aig->num_fairness}; }
+[[nodiscard]] inline std::span<aiger_and>    gates(const Aig& aig)       { return {aig->ands,        aig->num_ands}; }
+[[nodiscard]] inline std::span<Lit> justice_lits(const aiger_symbol& justice) { return {justice.lits, justice.size}; }
 // clang-format on
 
 [[nodiscard]] inline Lit next_lit(const Aig& aig) { return aiger_var2lit(aig->maxvar + 1); }
