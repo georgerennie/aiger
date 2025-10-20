@@ -34,6 +34,7 @@ static_assert(std::numeric_limits<Lit>::digits >= 32);
 using Aig = std::unique_ptr<aiger, decltype(&aiger_reset)>;
 [[nodiscard]] inline Aig make_aig() { return {aiger_init(), &aiger_reset}; }
 [[nodiscard]] inline Aig make_aig_ptr(aiger* aig) { return {aig, &aiger_reset}; }
+[[nodiscard]] inline Aig make_aig_null() { return make_aig_ptr(nullptr); }
 
 // Return non-zero on success on success
 [[nodiscard]] Aig checked_read(const std::string& file);
