@@ -10,20 +10,20 @@
 
 namespace Aiger {
 
-Aig checked_read(const std::string& file) {
+std::optional<Aig> checked_read(const std::string& file) {
 	auto aig = make_aig();
 
 	if (const auto aig_err = file == "-" ? aiger_read_from_file(aig.get(), stdin)
 	                                     : aiger_open_and_read_from_file(aig.get(), file.c_str())) {
 		fmt::println(stderr, R"(ERROR: error reading aiger file "{}":)", file);
 		fmt::println(stderr, "{}", aig_err);
-		return make_aig_ptr(nullptr);
+		return std::nullopt;
 	}
 
 	if (const auto aig_err = aiger_check(aig.get())) {
 		fmt::println(stderr, R"(ERROR: aiger file "{}" is invalid:)", file);
 		fmt::println(stderr, "{}", aig_err);
-		return make_aig_ptr(nullptr);
+		return std::nullopt;
 	}
 
 	return aig;
