@@ -1,3 +1,9 @@
+A fork of the AIGER library with added meson support and basic C++ wrappers
+in aiger++.hpp.
+
+
+
+
 AIGER is a format, library and set of utilities for And-Inverter Graphs (AIGs).
 For up-to-date version and more information see 'http://fmv.jku.at/aiger'.
 
