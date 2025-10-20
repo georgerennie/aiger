@@ -35,3 +35,7 @@ testaigtoaig
 testsimpaig
 wrapstim
 makefile
+
+subprojects/*
+!/suprojects/packagefiles
+!/subprojects/*.wrap

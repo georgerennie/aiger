@@ -6,7 +6,7 @@ project(
 	default_options: [
 		'c_std=gnu11',
 		'cpp_std=c++20',
-		'warning_level=3',
+		'warning_level=0',
 		'buildtype=release',
 		'b_lto=true',
 		'debug=true'
