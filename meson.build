@@ -1,5 +1,5 @@
 project(
-	'aiger++',
+	'aigerpp',
 	'c',
 	'cpp',
 	license: 'MIT',
@@ -15,19 +15,23 @@ project(
 
 install_headers('aiger++.hpp', 'aiger.h')
 
+fmt = dependency('fmt', required: true)
+
+aigerpp_inc = include_directories('.')
+
 # It gets installed just as aiger.so... This means you can treat it just as
 # regular aiger too. The distinction is that the c++ stuff is built in and a
 # dependency on fmt
-libaiger = library(
+aigerpp_lib = library(
 	'aiger',
 	'aiger.c',
 	'aiger++.cpp',
-	include_directories: include_directories('.'),
-	dependencies: dependency('fmt', required: true),
+	include_directories: aigerpp_inc,
+	dependencies: fmt,
 	install: true,
 )
 
-aiger = declare_dependency(
-	link_with: libaiger,
-	include_directories: include_directories('.'),
+aigerpp_dep = declare_dependency(
+	link_with: aigerpp_lib,
+	include_directories: aigerpp_inc,
 )
