@@ -30,14 +30,13 @@ static_assert(std::numeric_limits<Lit>::is_integer);
 static_assert(!std::numeric_limits<Lit>::is_signed);
 static_assert(std::numeric_limits<Lit>::digits >= 32);
 
-// Helper for managing aiger with RAII. By convention we use std::optional for
-// failure so Aig is assumed to always point to a real object (and care should
-// be taken around moves)
+// Helper for managing aiger with RAII
 using Aig = std::unique_ptr<aiger, decltype(&aiger_reset)>;
 [[nodiscard]] inline Aig make_aig() { return {aiger_init(), &aiger_reset}; }
+[[nodiscard]] inline Aig make_aig_ptr(aiger* aig) { return {aig, &aiger_reset}; }
 
-// Return non-zero on success
-[[nodiscard]] std::optional<Aig> checked_read(const std::string& file);
+// Return non-zero on success on success
+[[nodiscard]] Aig checked_read(const std::string& file);
 [[nodiscard]] bool checked_write(const Aig& aig, const std::string& file);
 
 [[nodiscard]] bool is_combinational(const Aig& aig);
