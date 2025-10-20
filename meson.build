@@ -13,7 +13,7 @@ project(
 	]
 )
 
-install_headers('aiger++.hpp', 'aiger.h')
+install_headers('aigerpp.hpp', 'aiger.h')
 
 fmt = dependency('fmt', required: true)
 
@@ -25,7 +25,7 @@ aigerpp_inc = include_directories('.')
 aigerpp_lib = library(
 	'aiger',
 	'aiger.c',
-	'aiger++.cpp',
+	'aigerpp.cpp',
 	include_directories: aigerpp_inc,
 	dependencies: fmt,
 	install: true,

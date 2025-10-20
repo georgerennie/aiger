@@ -6,7 +6,7 @@
 #include <cassert>
 #include <stack>
 #include <vector>
-#include "aiger++.hpp"
+#include "aigerpp.hpp"
 
 namespace Aiger {
 
