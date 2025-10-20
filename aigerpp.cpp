@@ -29,7 +29,7 @@ Aig checked_read(const std::string& file) {
 	return aig;
 }
 
-bool checked_write(Aig aig, const std::string& file) {
+bool checked_write(const Aig& aig, const std::string& file) {
 	if (const auto aig_err = aiger_check(aig.get())) {
 		fmt::println(stderr, R"(ERROR: aiger is invalid (before writing to "{}"):)", file);
 		fmt::println(stderr, "{}", aig_err);
